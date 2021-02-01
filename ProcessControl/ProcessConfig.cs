@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace ProcessControl {
-    //public enum BoolEnum { True, False }
-
     public enum Config
     {
         Unknown, Close, VeryLow, Low, Normal, High, VeryHigh, RealTime
