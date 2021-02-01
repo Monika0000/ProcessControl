@@ -22,6 +22,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Security.Principal;
 
 namespace ProcessControl
 {
@@ -78,6 +79,13 @@ namespace ProcessControl
 
         public static ObservableCollection<ProcessConfig> applyed = new ObservableCollection<ProcessConfig>();
 
+        public static bool IsAdministrator()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
         private Task thread = null;
         private static Mutex mutex = new Mutex();
 
@@ -94,6 +102,12 @@ namespace ProcessControl
 
         public MainWindow()
         {
+            if (!IsAdministrator())
+            {
+                System.Windows.MessageBox.Show("Run application as Administrator!");
+                throw new Exception();
+            }
+
             ShowInTaskbar = true;
             InitializeComponent();
 
